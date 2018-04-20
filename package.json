@@ -1,0 +1,16 @@
+{
+  "name": "pudding-bot",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "nodemon index.js",
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "bottender": "0.14.33",
+    "dotenv": "^5.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^1.17.3"
+  }
+}
