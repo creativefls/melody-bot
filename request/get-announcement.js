@@ -3,7 +3,7 @@ const axios = require('axios');
 module.exports = async function(email) {
   console.log('>> mengecek pengumuman', email);
   if (!email) return 'EMAILNYA MANA BOS'
-  let response = await axios.get('http://128.199.72.101:3000/api/Registrars/findOne', {
+  let response = await axios.get(process.env.API_URL + '/Registrars/findOne', {
     params: {
       filter: {
         where: {
