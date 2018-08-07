@@ -1,5 +1,6 @@
-const { LineBot, MongoSessionStore } = require('bottender');
+const { LineBot, MongoSessionStore, LineHandler } = require('bottender');
 const { createServer } = require('bottender/express');
+
 require('dotenv').config()
 
 const config = require('./bottender.config.js').line;
@@ -10,19 +11,31 @@ const bot = new LineBot({
   sessionStore: new MongoSessionStore('mongodb://localhost:27017/lineBot'),
 });
 
-bot.onEvent(async context => {
-  if (context.event.isFollow) {
-    await context.sendText('Hello, welcome to this bot!');
-  } else if (context.event.isText && context.event.text === 'How are you?') {
-    await context.sendText('I am fine.');
-  } else {
-    await context.sendText('I do not understand.');
-  }
-  context.replyImage(
-    'https://developers.line.me/media/messaging-api/messages/image-full-04fbba55.png',
-    'https://developers.line.me/media/messaging-api/messages/image-full-04fbba55.png'
-  );
-});
+const handler = new LineHandler()
+  .onFollow(true, async context => {
+    await context.sendText('Halo, aku Melody. Salam kenal!');
+  })
+  .onText(/hai melody/i, async context => {
+    let text = `Halo kak ${context.session.user.displayName}, lagi apa nih?`
+    await context.sendText(text);
+  })
+  .onText(/pengumuman/i, async context => {
+    let text = `Halo`
+    await context.sendText(text);
+  })
+  .onText(/mehesoyam/i, async context => {
+    let text = JSON.stringify(context.session.user)
+    await context.sendText(text);
+  })
+  .onEvent(async context => {
+    await context.sendText("Duh, bingung mau jawab apa");
+  })
+  .onError(async (context, err) => {
+    await context.sendText('Something wrong happened.');
+    console.log('>> error chat', err);
+  });
+
+bot.onEvent(handler);
 
 const server = createServer(bot);
 
