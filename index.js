@@ -4,11 +4,12 @@ const { createServer } = require('bottender/express');
 require('dotenv').config()
 
 const config = require('./bottender.config.js').line;
+const mongoString = process.env.MONGO_STRING || 'mongodb://localhost:27017/lineBot'
 
 const bot = new LineBot({
   accessToken: config.accessToken,
   channelSecret: config.channelSecret,
-  sessionStore: new MongoSessionStore('mongodb://localhost:27017/lineBot'),
+  sessionStore: new MongoSessionStore(mongoString, { collectionName: 'lineBotSession' }),
 });
 
 const handler = new LineHandler()
@@ -24,16 +25,20 @@ const handler = new LineHandler()
     let text = await require('./request/get-announcement')(email)
     await context.sendText(text);
   })
-  .onText(/mehesoyam/i, async context => {
+  .onText(/hesoyamwkwkwk/i, async context => {
     let text = JSON.stringify(context.session.user)
     await context.sendText(text);
   })
   .onEvent(async context => {
-    await context.sendText("Duh, bingung mau jawab apa");
+    console.log('>> chat dari', context.session.user);
+
+    if (!context.event.source.groupId && !context.event.source.roomId) {
+      await context.sendText("Duh, bingung mau jawab apa");
+    }
   })
   .onError(async (context, err) => {
-    await context.sendText('Something wrong happened.');
     console.log('>> error chat', err);
+    await context.sendText('Something wrong happened.');
   });
 
 bot.onEvent(handler);
