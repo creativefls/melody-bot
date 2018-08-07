@@ -14,10 +14,10 @@ module.exports = async function(email) {
   })
   switch (response.data.acceptanceStatus) {
     case 1:
-      return 'Waiting List room ' + response.data.roomFirst
+      return response.data.fullname + '\n\n Waiting List room ' + response.data.roomFirst
     case 2:
-      return 'Diterima jadi Delegates room ' + response.data.roomFirst
+      return response.data.fullname + '\n\n Diterima jadi Delegates room ' + response.data.roomFirst
     default:
-      return 'TIDAK DITERIMA BOSKU'
+      return response.data.fullname + '\n\n TIDAK DITERIMA BOSKU'
   }
 }
