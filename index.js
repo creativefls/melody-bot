@@ -49,7 +49,8 @@ server.get('/', (req, res) => {
   res.json({hello: 'hello world'})
 })
 
-server.listen(5000, () => {
+let port = process.env.PORT || 5000
+server.listen(port, () => {
   console.log('server is running on 5000 port...');
   console.log('token ', config.accessToken)
   console.log('secet ', config.channelSecret)
