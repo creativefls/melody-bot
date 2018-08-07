@@ -20,7 +20,8 @@ const handler = new LineHandler()
     await context.sendText(text);
   })
   .onText(/pengumuman/i, async context => {
-    let text = `Halo`
+    let email = context.event.text.split(' ')[1]
+    let text = await require('./request/get-announcement')(email)
     await context.sendText(text);
   })
   .onText(/mehesoyam/i, async context => {
