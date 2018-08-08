@@ -20,12 +20,12 @@ const handler = new LineHandler()
     let text = `Halo kak ${context.session.user.displayName}, lagi apa nih?`
     await context.sendText(text);
   })
-  .onText(/pengumuman/i, async context => {
+  .onText(/^pengumuman/i, async context => {
     let email = context.event.text.split(' ')[1]
     let text = await require('./request/get-announcement')(email)
     await context.sendText(text);
   })
-  .onText(/hesoyamwkwkwk/i, async context => {
+  .onText(/^hesoyamwkwkwk/i, async context => {
     let text = JSON.stringify(context.session.user)
     await context.sendText(text);
   })
