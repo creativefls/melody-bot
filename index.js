@@ -13,11 +13,22 @@ const bot = new LineBot({
 });
 
 const handler = new LineHandler()
-  .onFollow(true, async context => {
-    await context.sendText('Halo, aku Melody. Salam kenal!');
-  })
   .onText(/hai melody/i, async context => {
-    let text = `Halo kak ${context.session.user.displayName}, lagi apa nih?`
+    let text = `Halo kak ${context.session.user.displayName},
+kalau butuh bantuan, panggil aja namaku yah
+    `
+    await context.sendText(text);
+  })
+  .onText(/^melody/i, async context => {
+    let text = `Halo kak ${context.session.user.displayName},
+Saat ini melody baru bisa bantu buat ngecek pengumuman pendaftaran FLS 2018.
+Caranya dengan ketik
+pengumuman <spasi> email yang mau dicek status di pendaftarannya
+contoh: pengumuman wkwksama@gmail.com
+
+Gitu kak, hehe
+Semangat yaa
+    `
     await context.sendText(text);
   })
   .onText(/^pengumuman/i, async context => {
@@ -31,10 +42,16 @@ const handler = new LineHandler()
   })
   .onEvent(async context => {
     console.log('>> chat dari', context.session.user);
-
-    if (!context.event.source.groupId && !context.event.source.roomId) {
-      await context.sendText("Duh, bingung mau jawab apa");
+    if (context.event.isFollow) {
+      await context.sendText('Halo kak, aku Melody. Salam kenal!');
+    } else if (context.event.isJoin) {
+      await context.sendText('Halo kakak-kakak, aku Melody. Salam kenal!');
+    } else {
+      if (!context.event.source.groupId && !context.event.source.roomId) {
+        await context.sendText("Duh, bingung mau jawab apa");
+      }
     }
+
   })
   .onError(async (context, err) => {
     console.log('>> error chat', err);

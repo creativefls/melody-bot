@@ -8,7 +8,7 @@ module.exports = async function(email) {
       params: {
         filter: {
           where: {
-            email: email
+            email: { regexp: `^${email}/i`}
           }
         }
       }
