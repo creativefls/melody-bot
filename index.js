@@ -21,14 +21,25 @@ const handler = new LineHandler()
   .onText(/^melody/i, async context => {
     await context.sendText(text.help(context));
   })
+  .onText(/^mel/i, async context => {
+    let splitChatText = context.event.text.split(' ')
+    if (splitChatText[1] == 'cari') {
+      await context.sendText('oke wait. \nmulai mencari email dan nama...');
+      let txtSearch = splitChatText[2]
+      let msg = await require('./request/search')(txtSearch)
+      await context.sendText(msg);
+    } else {
+      await context.sendText('ya kak?');
+    }
+  })
   .onText(/^pengumuman/i, async context => {
     let email = context.event.text.split(' ')[1]
-    let text = await require('./request/get-announcement')(email)
-    await context.sendText(text);
+    let msg = await require('./request/get-announcement')(email)
+    await context.sendText(msg);
   })
   .onText(/^hesoyamwkwkwk/i, async context => {
-    let text = JSON.stringify(context.session.user)
-    await context.sendText(text);
+    let msg = JSON.stringify(context.session.user)
+    await context.sendText(msg);
   })
   .onEvent(async context => {
     console.log('>> chat dari', context.session.user);
