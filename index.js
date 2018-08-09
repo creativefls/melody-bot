@@ -29,7 +29,15 @@ const handler = new LineHandler()
       let msg = await require('./request/search')(txtSearch)
       await context.sendText(msg);
     } else {
-      await context.sendText('ya kak?');
+      if (context.event.text.indexOf('tampan') > -1) {
+        await context.sendText('awhh tampan sekaleee :* :*');
+      } else if (context.event.text.indexOf('ganteng') > -1) {
+        await context.sendText('ganteng bingit kak :* :*');
+      } else if (context.event.text.indexOf('cantik') > -1) {
+        await context.sendText('cantikan aku lah :p');
+      } else {
+        await context.sendText('ya kak?');
+      }
     }
   })
   .onText(/^pengumuman/i, async context => {
