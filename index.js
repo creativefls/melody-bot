@@ -4,6 +4,8 @@ const { createServer } = require('bottender/express');
 require('dotenv').config()
 
 const config = require('./bottender.config.js').line;
+const text = require('./lib/text')
+
 const mongoString = process.env.MONGO_STRING || 'mongodb://localhost:27017/lineBot'
 
 const bot = new LineBot({
@@ -14,22 +16,10 @@ const bot = new LineBot({
 
 const handler = new LineHandler()
   .onText(/hai melody/i, async context => {
-    let text = `Halo kak ${context.session.user.displayName},
-kalau butuh bantuan, panggil aja namaku yah
-    `
-    await context.sendText(text);
+    await context.sendText(text.greeting(context));
   })
   .onText(/^melody/i, async context => {
-    let text = `Halo kak ${context.session.user.displayName},
-Saat ini melody baru bisa bantu buat ngecek pengumuman pendaftaran FLS 2018.
-Caranya dengan ketik
-pengumuman <spasi> email yang mau dicek status di pendaftarannya
-contoh: pengumuman wkwksama@gmail.com
-
-Gitu kak, hehe
-Semangat yaa
-    `
-    await context.sendText(text);
+    await context.sendText(text.help(context));
   })
   .onText(/^pengumuman/i, async context => {
     let email = context.event.text.split(' ')[1]
