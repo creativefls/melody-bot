@@ -40,7 +40,7 @@ Delegates Future Leader Summit 2018 di Room ${ response.data.roomFirst }
         Terima Kasih
         `
       default:
-        return `Terima kasih karena sudah berpartisipasi dan mau mencoba untuk ambil bagian dalam merubah dunia dengan mendaftarkan dirimu di Future Leader Summit 2018.
+        return `Terima kasih ${response.data.fullname} karena sudah berpartisipasi dan mau mencoba untuk ambil bagian dalam merubah dunia dengan mendaftarkan dirimu di Future Leader Summit 2018.
 
           Namun kami meminta maaf, karena untuk saat ini, kamu belum bisa bergabung menjadi salah satu delegasi di Future Leader Summit 2018.
 
