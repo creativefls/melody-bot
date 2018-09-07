@@ -9,9 +9,13 @@ module.exports = async function (search) {
         filter: {
           limit: 10,
           where: {
-            or: [
-              { fullname: { like: (search || '') + '.*', options: 'i' } },
-              { email: { like: (search || '') + '.*', options: 'i' } },
+            and: [
+              {
+                or: [
+                  { fullname: { like: (search || '') + '.*', options: 'i' } },
+                  { email: { like: (search || '') + '.*', options: 'i' } },
+                ]
+              },
               { acceptanceStatus: 2 },
             ]
           }
