@@ -2,23 +2,26 @@ const axios = require('axios');
 
 module.exports = async function (search) {
   console.log('>> pencarian', search);
+
+  const filterWhere = {
+    and: [
+      {
+        or: [
+          { fullname: { like: (search || '') + '.*', options: 'i' } },
+          { email: { like: (search || '') + '.*', options: 'i' } },
+        ]
+      },
+      { acceptanceStatus: 2 },
+    ]
+  }
+
   if (!search) return 'eh cari apa kak?'
   try {
     let response = await axios.get(process.env.API_URL + '/Registrars', {
       params: {
         filter: {
           limit: 10,
-          where: {
-            and: [
-              {
-                or: [
-                  { fullname: { like: (search || '') + '.*', options: 'i' } },
-                  { email: { like: (search || '') + '.*', options: 'i' } },
-                ]
-              },
-              { acceptanceStatus: 2 },
-            ]
-          }
+          where: filterWhere
         }
       }
     })
@@ -27,12 +30,7 @@ module.exports = async function (search) {
 
     let total = await axios.get(process.env.API_URL + '/Registrars/count', {
       params: {
-        where: {
-          or: [
-            { fullname: { like: (search || '') + '.*', options: 'i' } },
-            { email: { like: (search || '') + '.*', options: 'i' } }
-          ]
-        }
+        where: filterWhere
       }
     })
     total = total.data.count
